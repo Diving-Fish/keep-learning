@@ -1,0 +1,1 @@
+This folder is for everyday problem or more solutions, depending on free time.
