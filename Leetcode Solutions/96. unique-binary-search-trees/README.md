@@ -13,3 +13,25 @@
 > Ans(n) = Sigma (k = 1 to n) Q(k - 1) * Q(n - k)
 
 采用动态规划思想，将已经算出的Q(n)存入数组中即可逐步求解。
+
+## 代码
+
+```cpp
+class Solution {
+public:
+    int numTrees(int n) {
+        vector<int> v;
+        v.push_back(1);
+        v.push_back(1);
+        int total = 1;
+        for (int i = 2; i <= n; i++) {
+            total = 0;
+            for (int j = 1; j <= i; j++) {
+                total += v[j - 1] * v[i - j];
+            }
+            v.push_back(total);
+        }
+        return total;
+    }
+};
+```
