@@ -10,29 +10,29 @@
 
 如果有概率论的基础，其实并不难看出如下规则：
 
-设 $ P(i) $ 为抽出点数为 $ i $ 的概率，则
+设 ![](http://latex.codecogs.com/gif.latex?P(i)) 为抽出点数为 ![](http://latex.codecogs.com/gif.latex?i) 的概率，则
 
-当 $ i \leq W $ 时，
+当 ![](http://latex.codecogs.com/gif.latex?i%20\\leq%20W) 时，
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ P(i) = \frac{P(0) + P(1) + ... + P(i - 1)}{W} $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=\\frac{P(0)+P(1)+...+P(i-1)}{W})
 
-（即点数为 $0$ 到 $i-1$ 的任何状态，都有 $\frac{1}{W}$ 的可能到达点数为 $i$ 的状态）
+（即点数为 ![](http://latex.codecogs.com/gif.latex?0) 到 ![](http://latex.codecogs.com/gif.latex?i-1) 的任何状态，都有 ![](http://latex.codecogs.com/gif.latex?\\frac{1}{W}) 的可能到达点数为 ![](http://latex.codecogs.com/gif.latex?i) 的状态）
 
-当 $ W < i < K $ 时，
+当 ![](http://latex.codecogs.com/gif.latex?W<i<K) 时，
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ P(i) = \frac{P(i - W) + P(i - W + 1) + ... + P(i - 1)}{W} $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=\\frac{P(i-W)+P(i-W+1)+...+P(i-1)}{W})
 
 （同上，不难理解）
 
-当 $ K \leq i < K + W $ 时，
+当 ![](http://latex.codecogs.com/gif.latex?K%20\\leq%20i<K+W) 时，
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ P(i) = \frac{P(i - W) + P(i - W + 1) + ... + P(K - 1)}{W} $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=\\frac{P(i-W)+P(i-W+1)+...+P(K-1)}{W})
 
-（因为爱丽丝在点数为 $K$ 以后会停止抽牌，所以只有点数为 $i-W$ 到 $K-1$ 之间的状态才有可能到达点数为 $i$ 的状态）
+（因为爱丽丝在点数为 ![](http://latex.codecogs.com/gif.latex?K) 以后会停止抽牌，所以只有点数为 ![](http://latex.codecogs.com/gif.latex?i-W) 到 ![](http://latex.codecogs.com/gif.latex?K-1) 之间的状态才有可能到达点数为 ![](http://latex.codecogs.com/gif.latex?i) 的状态）
 
-当 $ i >= K + W $ 时，
+当 ![](http://latex.codecogs.com/gif.latex?i>=K+W) 时，
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ P(i) = 0 $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=0)
 
 得出上述的结论以后，就不难理解这是用动态规划解决的一个问题。
 
@@ -96,7 +96,7 @@ public:
 
 > 118 / 146 个通过测试用例
 
-问题出在哪呢？在第二次循环中，我计算了 $ i >= K + W $ 的这些值；然而，这些值并不会对结果造成影响，因为都是0。因此，把第二次循环的终止条件约束到 `min(N, K + W - 1)`，并且把第二个和第三个循环写在一起（因为第二个循环中的赋值实际上可以直接在第三个循环中使用），并且把除法放到最外面。改动后的代码大概像这样：
+问题出在哪呢？在第二次循环中，我计算了 ![](http://latex.codecogs.com/gif.latex?i>=K+W) 的这些值；然而，这些值并不会对结果造成影响，因为都是0。因此，把第二次循环的终止条件约束到 `min(N, K + W - 1)`，并且把第二个和第三个循环写在一起（因为第二个循环中的赋值实际上可以直接在第三个循环中使用），并且把除法放到最外面。改动后的代码大概像这样：
 
 ```cpp
 double ans = 0;
@@ -114,28 +114,28 @@ ans /= W;
 
 这时候我突然明白，后面的测试用例都是大数据，仅仅是卡边界没有办法从根本上解决问题。因此，我开始思考前面公式化简的可能性，然后发现
 
-当 $ i \leq W $ 时，
+当 ![](http://latex.codecogs.com/gif.latex?i%20\\leq%20W) 时，
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ P(i) = \frac{P(0) + P(1) + ... + P(i - 1)}{W} = \frac{P(0) + P(1) + ... + P(i - 2)}{W} + \frac{P(i - 1)}{W}$
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=\\frac{P(0)+P(1)+...+P(i-1)}{W}=\\frac{P(0)+P(1)+...+P(i-2)}{W}+\\frac{P(i-1)}{W})
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ = P(i - 1) + \frac{P(i - 1)}{W} $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?=P(i-1)+\\frac{P(i-1)}{W})
 
 单次计算时间复杂度从 O(W) 下降到了 O(1)。同理：
 
-当 $ W < i \leq K $ 时，
+当 ![](http://latex.codecogs.com/gif.latex?W<i%20\\leq%20K) 时，
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ P(i) = \frac{P(i - W) + P(i - W + 1) + ... + P(i - 1)}{W} $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=\\frac{P(i-W)+P(i-W+1)+...+P(i-1)}{W})
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ = P(i - 1) + \frac{P(i - 1) - P (i - W - 1)}{W} $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?=P(i-1)+\\frac{P(i-1)-P(i-W-1)}{W} )
 
 
-当 $ K < i < K + W $ 时，
+当 ![](http://latex.codecogs.com/gif.latex?K<i<K+W) 时，
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ P(i) = \frac{P(i - W) + P(i - W + 1) + ... + P(K - 1)}{W} $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=\\frac{P(i-W)+P(i-W+1)+...+P(K-1)}{W})
 
-&nbsp;&nbsp;&nbsp;&nbsp;$ = P(i - 1) - \frac{P(i - W - 1)}{W} $
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?=P(i-1)-\\frac{P(i-W-1)}{W})
 
-这样的话，整个算法的时间复杂度就从 $O(W * (K + W))$ 降低到了$O(K + W)$，时间大概是从3 ~ 4s降到了4ms。
+这样的话，整个算法的时间复杂度就从 ![](http://latex.codecogs.com/gif.latex?O(W*(K+W))) 降低到了![](http://latex.codecogs.com/gif.latex?O(K+W))，时间大概是从3 ~ 4s降到了4ms。
 
 ## 最终代码
 
