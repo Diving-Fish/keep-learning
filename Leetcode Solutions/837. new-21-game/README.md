@@ -116,7 +116,9 @@ ans /= W;
 
 当 ![](http://latex.codecogs.com/gif.latex?i%20\\leq%20W) 时，
 
-&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=\\frac{P(0)+P(1)+...+P(i-1)}{W}=\\frac{P(0)+P(1)+...+P(i-2)}{W}+\\frac{P(i-1)}{W})
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?P(i)=\\frac{P(0)+P(1)+...+P(i-1)}{W})
+
+&nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?=\\frac{P(0)+P(1)+...+P(i-2)}{W}+\\frac{P(i-1)}{W})
 
 &nbsp;&nbsp;&nbsp;&nbsp;![](http://latex.codecogs.com/gif.latex?=P(i-1)+\\frac{P(i-1)}{W})
 
