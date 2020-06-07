@@ -47,6 +47,21 @@ n == cost[i].length
 1 <= cost[i][j] <= 10^4
 ```
 
+## 解法
+
+用`dp[i][j][k]`表示染色到第i个房子、颜色为j、已经分成k的街区的花费。
+如果房子已经染过色，则状态转移方程为：
+```cpp
+for l in 1..n:
+ans[i][houses[i]][k + (houses[i] != l)] = min(ans[i][houses[i]][k + (houses[i] != l)], ans[i - 1][l][k]);
+```
+
+如果没有染过色，则状态转移方程为：
+```cpp
+for l in 1..n:
+ans[i][j][k + (j != l)] = min(ans[i][j][k + (j != l)], ans[i - 1][l][k] + cost[i][l - 1]);
+```
+
 ## 代码
 ```cpp
 class Solution {
